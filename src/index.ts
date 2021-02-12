@@ -1,11 +1,4 @@
-// Person (is an Entity)
 
-// Family (Groups People, is an Entity)
-
-// Farm (is a Location, is a Business)
-
-// Business (is an Entity)
-    // has owner
 
 // Farm Animal (is an Animal, belongs to a Farm)
 
@@ -19,9 +12,13 @@
 
 // Cat
 
+
+
 // Truck (is a Vehicle, can tow)
 
 // Car (is a Vehicle, cannot tow)
+
+
 
 // Horse Trailer (can hold 2 large animals)
 
