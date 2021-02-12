@@ -7,6 +7,7 @@ export interface IEntity {
 export interface IBusiness extends IEntity {
 
     owners: IEntity[];
+    cashOnHand: number;
 
 }
 

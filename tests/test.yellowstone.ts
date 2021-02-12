@@ -6,6 +6,10 @@ import { Family } from '../src/classes/class.family';
 import { Business } from '../src/classes/class.business';
 import { Farm } from '../src/classes/class.farm';
 
+import { Horse } from '../src/classes/class.horse';
+import { Cow } from '../src/classes/class.cow';
+import { FarmAnimalType } from '../src/classes/class.farmAnimal';
+
 let duttonFamily:Family = new Family("Dutton");
 let yellowstoneRanchTrust:Business;
 let yellowstoneRanch:Farm;
@@ -58,8 +62,55 @@ describe("Yellowstone Test", () => {
         it('Should have same owners as the business', () => {
 
             yellowstoneRanch = new Farm("Yellowstone Ranch", yellowstoneRanchTrust, "123 Somewhere in Montana", "Plot 1 Lots 1 - 32");
-            expect( yellowstoneRanch.owners ).to.include( duttonFamily );
-            expect( yellowstoneRanch.business.owners ).to.include( duttonFamily );
+            expect( yellowstoneRanch.owners ).to.include.members([ duttonFamily ]);
+            expect( yellowstoneRanch.business.owners ).to.include.members([ duttonFamily ]);
+
+        });
+
+    });
+
+    describe('Farm Animals', () => {
+
+        const farm2 = new Farm("ShyLynn Ranch", new Business("ShyLynn Ranch Ltd", [ new Person("Angie","Ross") ]), "Silver Creek", "");
+        farm2.cashOnHand = 10000;
+
+        describe('Horse', () => {
+
+            it('Should be a horse (of course)', () => {
+
+                const horse = new Horse( yellowstoneRanch, "Skittles" );
+                expect(horse.type).to.be.eq( FarmAnimalType.HORSE );
+
+            });
+
+            it('Should be sold to another farm', () => {
+
+                const horse = new Horse( yellowstoneRanch, "Skittles" );
+                horse.sell(farm2, 1000);
+                expect(farm2.animals).to.include.members([ horse ]);
+                expect(yellowstoneRanch.animals).to.not.include.members([ horse ]);
+
+            });
+
+        });
+
+        describe('Cow', () => {
+            
+            it('Should be a cow (oh wow)', () => {
+
+                const cow = new Cow( farm2 );
+                expect(cow.type).to.be.eq( FarmAnimalType.COW );
+
+            });
+            
+            it('Should not be sold to a farm with not enough money', () => {
+
+                const cow = new Cow( farm2 );
+                expect(() => cow.sell(yellowstoneRanch, 2000)).to.throw("Cannot sell this animal, prospective owner does not have enough cash on hand to complete the sale");
+                //expect(farm2.animals).to.include.members([ cow ]);
+                //expect(yellowstoneRanch.animals).to.not.include.members([ cow ]);
+
+            });
 
         });
 
